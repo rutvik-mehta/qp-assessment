@@ -7,6 +7,7 @@ const sequelize = new Sequelize(
   {
     host: process.env.DB_HOST,
     dialect: "mysql",
+    logging: false,
   }
 );
 
@@ -17,5 +18,11 @@ db.sequelize = sequelize;
 
 db.users = require("./user")(sequelize, Sequelize);
 db.groceries = require("./grocery")(sequelize, Sequelize);
+db.orders = require("./order")(sequelize, Sequelize);
+
+db.orders.belongsTo(db.users, {
+  foreignKey: "userId",
+  as: "user",
+});
 
 module.exports = db;
