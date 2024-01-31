@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mysql_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: grocery_app
+      MYSQL_USER: root
+      MYSQL_PASSWORD: mysql@123
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  mysql-workbench:
+    image: mysql/mysql-workbench
+    container_name: mysql_workbench
+    restart: unless-stopped
+    depends_on:
+      - mysql
+    environment:
+      - DISPLAY=host.docker.internal:0
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+
+volumes:
+  mysql_data:
